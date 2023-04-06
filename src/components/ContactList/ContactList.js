@@ -1,24 +1,18 @@
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { getContacts, getFilterValue } from 'redux/selectors';
-import {
-  deleteContact,
-  fetchContacts,
-} from 'redux/contacts/contactsOperations';
+import { useDispatch } from 'react-redux';
+import { useContacts } from 'hooks';
+import { useVisibleContacts } from 'hooks';
+import { deleteContact, fetchContacts } from 'redux/contacts';
 import { DeleteBtn, List, ListItem } from './ContactList.styled';
 
 export const ContactList = () => {
   const dispatch = useDispatch();
-  const contacts = useSelector(getContacts);
-  const filter = useSelector(getFilterValue);
+  const contacts = useContacts();
+  const visibleContacts = useVisibleContacts();
 
   useEffect(() => {
     if (contacts.length === 0) dispatch(fetchContacts());
   }, [dispatch, contacts.length]);
-
-  const visibleContacts = contacts.filter(({ name }) =>
-    name.toLowerCase().includes(filter.toLowerCase())
-  );
 
   return (
     <List>

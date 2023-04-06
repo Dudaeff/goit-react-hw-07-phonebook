@@ -1,13 +1,15 @@
-import { useSelector } from "react-redux";
-import { getError, getIsLoading } from "redux/selectors";
+import { useError } from "hooks";
+import { useIsLoading } from "hooks";
+import { Section } from "./Section/Section";
 import { ContactForm } from "./ContactForm/ContactForm";
 import { ContactList } from "./ContactList/ContactList";
 import { Filter } from "./Filter/Filter";
-import { Section } from "./Section/Section";
 
 export const App = () => {
-  const isLoading = useSelector(getIsLoading);
-  const error = useSelector(getError);
+  const isLoading = useIsLoading() ;
+  const error = useError();
+
+  error && console.error(error);
 
   return (
     <div>
@@ -15,7 +17,7 @@ export const App = () => {
         <ContactForm />
         <h2>Contacts</h2>
         <Filter />
-        {error && <p>Sorry... something went wrong.</p>}
+        {error && <p>{error.massage }</p>}
         {isLoading ? <p>Loading...</p> :  <ContactList />}
       </Section>
     </div>
